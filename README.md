@@ -44,7 +44,7 @@ Cooling logic: if the fridge is empty, the Peltier stays OFF regardless of mode.
 - `/docs` → Architecture, wiring diagrams, and full technical report
 
 ## 🎥 Project Demonstration
-👉 Project demo video: VIDEO_LINK_HERE
+👉 Project demo video:
 
 ## ⚠️ Disclaimer
 This project was developed for academic and educational purposes only and is not intended for clinical or medical use.
