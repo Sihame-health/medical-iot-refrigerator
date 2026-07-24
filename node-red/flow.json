@@ -1,0 +1,714 @@
+[
+    {
+        "id": "dfa7537204252f08",
+        "type": "tab",
+        "label": "Flux 2",
+        "disabled": false,
+        "info": "",
+        "env": []
+    },
+    {
+        "id": "mqtt_temp",
+        "type": "mqtt in",
+        "z": "dfa7537204252f08",
+        "name": "",
+        "topic": "frigo/temp/current",
+        "qos": "2",
+        "datatype": "auto-detect",
+        "broker": "brk1",
+        "nl": false,
+        "rap": false,
+        "inputs": 0,
+        "x": 200,
+        "y": 100,
+        "wires": [
+            [
+                "gauge_temp",
+                "fcc55b9a7339eba1",
+                "f95843dc9726d78c"
+            ]
+        ]
+    },
+    {
+        "id": "gauge_temp",
+        "type": "ui_gauge",
+        "z": "dfa7537204252f08",
+        "name": "",
+        "group": "grp_peltier",
+        "order": 1,
+        "width": 6,
+        "height": 4,
+        "gtype": "gage",
+        "title": "Température",
+        "label": "°C",
+        "format": "{{value}}",
+        "min": 0,
+        "max": "30",
+        "colors": [
+            "#00b500",
+            "#e6e600",
+            "#ca3838"
+        ],
+        "x": 440,
+        "y": 80,
+        "wires": []
+    },
+    {
+        "id": "mode_select",
+        "type": "ui_dropdown",
+        "z": "dfa7537204252f08",
+        "name": "",
+        "label": "Mode Médical",
+        "tooltip": "",
+        "place": "",
+        "group": "grp_peltier",
+        "order": 2,
+        "width": 6,
+        "height": 1,
+        "passthru": true,
+        "multiple": false,
+        "options": [
+            {
+                "label": "Sang (+4°C)",
+                "value": "SANG",
+                "type": "str"
+            },
+            {
+                "label": "Plaquettes (+22°C)",
+                "value": "PLAQUETTES",
+                "type": "str"
+            },
+            {
+                "label": "Vaccins (+5°C)",
+                "value": "VACCINS",
+                "type": "str"
+            },
+            {
+                "label": "Reactifs (10°C)",
+                "value": "REACTIFS",
+                "type": "str"
+            }
+        ],
+        "payload": "",
+        "topic": "frigo/mode/set",
+        "topicType": "str",
+        "className": "",
+        "x": 220,
+        "y": 180,
+        "wires": [
+            [
+                "mqtt_out"
+            ]
+        ]
+    },
+    {
+        "id": "mqtt_door",
+        "type": "mqtt in",
+        "z": "dfa7537204252f08",
+        "name": "",
+        "topic": "frigo/door/status",
+        "broker": "brk1",
+        "inputs": 0,
+        "x": 200,
+        "y": 280,
+        "wires": [
+            [
+                "door_text",
+                "door_logic",
+                "f61f1ca9582fc556"
+            ]
+        ]
+    },
+    {
+        "id": "door_text",
+        "type": "ui_text",
+        "z": "dfa7537204252f08",
+        "group": "grp_door",
+        "order": 1,
+        "width": 6,
+        "height": 1,
+        "name": "",
+        "label": "État Porte :",
+        "format": "{{msg.payload}}",
+        "layout": "row-spread",
+        "className": "",
+        "style": false,
+        "font": "",
+        "fontSize": "",
+        "color": "#000000",
+        "x": 490,
+        "y": 280,
+        "wires": []
+    },
+    {
+        "id": "door_logic",
+        "type": "trigger",
+        "z": "dfa7537204252f08",
+        "name": "Alerte 30s",
+        "op1": "",
+        "op2": "ON",
+        "op1type": "nul",
+        "op2type": "str",
+        "duration": "30",
+        "extend": false,
+        "overrideDelay": false,
+        "units": "s",
+        "reset": "CLOSED",
+        "bytopic": "all",
+        "topic": "frigo/buzzer/cmd",
+        "outputs": 1,
+        "x": 460,
+        "y": 340,
+        "wires": [
+            [
+                "mqtt_out",
+                "9ec7f9777c89e371"
+            ]
+        ]
+    },
+    {
+        "id": "btn_open",
+        "type": "ui_button",
+        "z": "dfa7537204252f08",
+        "name": "",
+        "group": "grp_door",
+        "order": 3,
+        "width": 3,
+        "height": 1,
+        "passthru": false,
+        "label": "OUVRIR",
+        "tooltip": "",
+        "color": "",
+        "bgcolor": "",
+        "className": "",
+        "icon": "",
+        "payload": "OPEN",
+        "payloadType": "str",
+        "topic": "frigo/servo/cmd",
+        "topicType": "str",
+        "x": 200,
+        "y": 400,
+        "wires": [
+            [
+                "a120c0ead401e36f"
+            ]
+        ]
+    },
+    {
+        "id": "btn_close",
+        "type": "ui_button",
+        "z": "dfa7537204252f08",
+        "name": "",
+        "group": "grp_door",
+        "order": 4,
+        "width": 3,
+        "height": 1,
+        "passthru": false,
+        "label": "FERMER",
+        "tooltip": "",
+        "color": "",
+        "bgcolor": "",
+        "className": "",
+        "icon": "",
+        "payload": "CLOSE",
+        "payloadType": "str",
+        "topic": "frigo/servo/cmd",
+        "topicType": "str",
+        "x": 200,
+        "y": 440,
+        "wires": [
+            [
+                "a120c0ead401e36f"
+            ]
+        ]
+    },
+    {
+        "id": "mqtt_out",
+        "type": "mqtt out",
+        "z": "dfa7537204252f08",
+        "name": "",
+        "topic": "frigo/mode/set",
+        "qos": "",
+        "retain": "",
+        "respTopic": "",
+        "contentType": "",
+        "userProps": "",
+        "correl": "",
+        "expiry": "",
+        "broker": "brk1",
+        "x": 740,
+        "y": 180,
+        "wires": []
+    },
+    {
+        "id": "chart_temp",
+        "type": "ui_chart",
+        "z": "dfa7537204252f08",
+        "name": "",
+        "group": "grp_peltier",
+        "order": 3,
+        "width": 6,
+        "height": 4,
+        "label": "Historique",
+        "chartType": "line",
+        "legend": "false",
+        "xformat": "HH:mm:ss",
+        "nodata": "",
+        "dot": false,
+        "ymin": "",
+        "ymax": "",
+        "removeOlder": "1",
+        "removeOlderPoints": "",
+        "removeOlderUnit": "3600",
+        "cutout": "",
+        "useOneColor": false,
+        "useUTC": false,
+        "colors": [
+            "#1f77b4",
+            "#aec7e8",
+            "#ff7f0e",
+            "#2ca02c",
+            "#98df8a",
+            "#d62728",
+            "#ff9896",
+            "#9467bd",
+            "#c5b0d5"
+        ],
+        "outputs": 1,
+        "useDifferentColor": false,
+        "className": "",
+        "x": 580,
+        "y": 120,
+        "wires": [
+            []
+        ]
+    },
+    {
+        "id": "fcc55b9a7339eba1",
+        "type": "function",
+        "z": "dfa7537204252f08",
+        "name": "Chiffrage Temp",
+        "func": "msg.payload = Number(msg.payload);\nreturn msg;",
+        "outputs": 1,
+        "timeout": 0,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 400,
+        "y": 120,
+        "wires": [
+            [
+                "chart_temp"
+            ]
+        ]
+    },
+    {
+        "id": "5af32480f4adb8f3",
+        "type": "mqtt in",
+        "z": "dfa7537204252f08",
+        "name": "",
+        "topic": "frigo/obstacle",
+        "qos": "2",
+        "datatype": "auto-detect",
+        "broker": "brk1",
+        "nl": false,
+        "rap": true,
+        "rh": 0,
+        "inputs": 0,
+        "x": 150,
+        "y": 500,
+        "wires": [
+            [
+                "dab144429f5f8546",
+                "8afa97adfc86e7f1"
+            ]
+        ]
+    },
+    {
+        "id": "dab144429f5f8546",
+        "type": "ui_text",
+        "z": "dfa7537204252f08",
+        "group": "764f01e22bc142a4",
+        "order": 0,
+        "width": 0,
+        "height": 0,
+        "name": "",
+        "label": "Contenu du frigo",
+        "format": "{{msg.payload}}",
+        "layout": "row-spread",
+        "className": "",
+        "style": false,
+        "font": "",
+        "fontSize": 16,
+        "color": "#000000",
+        "x": 470,
+        "y": 480,
+        "wires": []
+    },
+    {
+        "id": "d1e90733bd61c8dc",
+        "type": "worldmap",
+        "z": "dfa7537204252f08",
+        "name": "",
+        "lat": "",
+        "lon": "",
+        "zoom": "",
+        "layer": "",
+        "cluster": "",
+        "maxage": "",
+        "usermenu": "show",
+        "layers": "show",
+        "panit": "false",
+        "panlock": "false",
+        "zoomlock": "false",
+        "hiderightclick": "false",
+        "coords": "false",
+        "showgrid": "false",
+        "showruler": "false",
+        "allowFileDrop": "false",
+        "path": "/worldmap",
+        "overlist": "DR,CO,RA,DN",
+        "maplist": "OSMG,OSMC,EsriC,EsriS,UKOS",
+        "mapname": "",
+        "mapurl": "",
+        "mapopt": "",
+        "mapwms": false,
+        "x": 500,
+        "y": 580,
+        "wires": []
+    },
+    {
+        "id": "a120c0ead401e36f",
+        "type": "mqtt out",
+        "z": "dfa7537204252f08",
+        "name": "",
+        "topic": "frigo/servo/cmd",
+        "qos": "",
+        "retain": "",
+        "respTopic": "",
+        "contentType": "",
+        "userProps": "",
+        "correl": "",
+        "expiry": "",
+        "broker": "brk1",
+        "x": 480,
+        "y": 420,
+        "wires": []
+    },
+    {
+        "id": "74d0736b7c5647fa",
+        "type": "mqtt in",
+        "z": "dfa7537204252f08",
+        "name": "",
+        "topic": "frigo/gps/lat",
+        "qos": "2",
+        "datatype": "auto-detect",
+        "broker": "brk1",
+        "nl": false,
+        "rap": true,
+        "rh": 0,
+        "inputs": 0,
+        "x": 150,
+        "y": 580,
+        "wires": [
+            [
+                "06efd2d3e7760e8a"
+            ]
+        ]
+    },
+    {
+        "id": "653d53f5ca43a336",
+        "type": "mqtt in",
+        "z": "dfa7537204252f08",
+        "name": "",
+        "topic": "frigo/gps/lng",
+        "qos": "2",
+        "datatype": "auto-detect",
+        "broker": "brk1",
+        "nl": false,
+        "rap": true,
+        "rh": 0,
+        "inputs": 0,
+        "x": 150,
+        "y": 640,
+        "wires": [
+            [
+                "06efd2d3e7760e8a"
+            ]
+        ]
+    },
+    {
+        "id": "06efd2d3e7760e8a",
+        "type": "function",
+        "z": "dfa7537204252f08",
+        "name": "function 1",
+        "func": "// 1. On récupère les valeurs déjà stockées ou on met 0 par défaut\nlet lat = context.get('lat') || 0;\nlet lon = context.get('lon') || 0;\n\n// 2. On regarde quel topic arrive et on met à jour la variable correspondante\nif (msg.topic === \"frigo/gps/lat\") {\n    lat = parseFloat(msg.payload);\n    context.set('lat', lat); // On enregistre en mémoire\n} \nelse if (msg.topic === \"frigo/gps/lng\") {\n    lon = parseFloat(msg.payload);\n    context.set('lon', lon); // On enregistre en mémoire\n}\n\n// 3. Si on a les deux coordonnées, on envoie l'objet à la WorldMap\nif (lat !== 0 && lon !== 0) {\n    msg.payload = {\n        name: \"Frigo_Medical\",\n        lat: lat,\n        lon: lon,\n        icon: \"medkit\",\n        color: \"red\",\n        layer: \"ESP32\"\n    };\n    return msg;\n}\n\n// Sinon on ne fait rien (on attend d'avoir les deux)\nreturn null;",
+        "outputs": 1,
+        "timeout": 0,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 320,
+        "y": 580,
+        "wires": [
+            [
+                "d1e90733bd61c8dc"
+            ]
+        ]
+    },
+    {
+        "id": "9ec7f9777c89e371",
+        "type": "ui_toast",
+        "z": "dfa7537204252f08",
+        "position": "dialog",
+        "displayTime": "10",
+        "highlight": "",
+        "sendall": true,
+        "outputs": 1,
+        "ok": "OK",
+        "cancel": "Cancel",
+        "raw": true,
+        "className": "",
+        "topic": "frigo/door/status",
+        "name": "ALERTE Porte ouverte ",
+        "x": 880,
+        "y": 340,
+        "wires": [
+            []
+        ],
+        "icon": "node-red/alert.svg"
+    },
+    {
+        "id": "d640cf22b1c0c33f",
+        "type": "influxdb out",
+        "z": "dfa7537204252f08",
+        "influxdb": "4523e77bfba454a7",
+        "name": "Medical Fridge",
+        "measurement": "",
+        "precision": "",
+        "retentionPolicy": "",
+        "database": "Medical_Fridge",
+        "precisionV18FluxV20": "s",
+        "retentionPolicyV18Flux": "",
+        "org": "MedicalLab",
+        "bucket": "Fridge_Data",
+        "x": 780,
+        "y": 40,
+        "wires": []
+    },
+    {
+        "id": "f95843dc9726d78c",
+        "type": "function",
+        "z": "dfa7537204252f08",
+        "name": "function Influx",
+        "func": "msg.payload = parseFloat(msg.payload); // Force le format nombre (ex: 22.5)\nmsg.measurement = \"temperature\";\nreturn msg;",
+        "outputs": 1,
+        "timeout": 0,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 380,
+        "y": 40,
+        "wires": [
+            [
+                "d640cf22b1c0c33f"
+            ]
+        ]
+    },
+    {
+        "id": "f61f1ca9582fc556",
+        "type": "function",
+        "z": "dfa7537204252f08",
+        "name": "function InfluxPorte",
+        "func": "if (msg.payload === \"OPEN\") {\n    msg.payload = 1;\n    msg.status_text = \"PORTE OUVERTE\";\n} else {\n    msg.payload = 0;\n    msg.status_text = \"PORTE FERMEE\";\n}\nmsg.measurement = \"etat_porte\";\nreturn msg;",
+        "outputs": 1,
+        "timeout": 0,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 410,
+        "y": 380,
+        "wires": [
+            [
+                "d640cf22b1c0c33f"
+            ]
+        ]
+    },
+    {
+        "id": "8afa97adfc86e7f1",
+        "type": "function",
+        "z": "dfa7537204252f08",
+        "name": "function 2",
+        "func": "if (msg.payload === \"PLEIN\") {\n    msg.payload = 1;\n    msg.stock_text = \"FRIGO REMPLI\";\n} else {\n    msg.payload = 0;\n    msg.stock_text = \"FRIGO VIDE\";\n}\nmsg.measurement = \"presence_stock\";\nreturn msg;",
+        "outputs": 1,
+        "timeout": 0,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 380,
+        "y": 540,
+        "wires": [
+            [
+                "d640cf22b1c0c33f"
+            ]
+        ]
+    },
+    {
+        "id": "83f98ec767c29d1b",
+        "type": "mqtt in",
+        "z": "dfa7537204252f08",
+        "name": "Statue Peltier",
+        "topic": "frigo/peltier/state",
+        "qos": "2",
+        "datatype": "auto-detect",
+        "broker": "brk1",
+        "nl": false,
+        "rap": true,
+        "rh": 0,
+        "inputs": 0,
+        "x": 150,
+        "y": 720,
+        "wires": [
+            [
+                "372fa3f540ca91e8",
+                "6f7305e3cffbce1c"
+            ]
+        ]
+    },
+    {
+        "id": "372fa3f540ca91e8",
+        "type": "ui_text",
+        "z": "dfa7537204252f08",
+        "group": "grp_peltier",
+        "order": 3,
+        "width": 0,
+        "height": 0,
+        "name": "",
+        "label": "PELTIER",
+        "format": "{{msg.payload}}",
+        "layout": "row-spread",
+        "className": "",
+        "style": false,
+        "font": "",
+        "fontSize": 16,
+        "color": "#000000",
+        "x": 380,
+        "y": 720,
+        "wires": []
+    },
+    {
+        "id": "6f7305e3cffbce1c",
+        "type": "function",
+        "z": "dfa7537204252f08",
+        "name": "Etat PELTIER",
+        "func": "if (msg.payload === \"ON\") {\n    msg.payload = 1;\n    msg.peltier_text = \"REFROIDISSEMENT ACTIF\";\n} else {\n    msg.payload = 0;\n    msg.peltier_text = \"VEILLE\";\n}\nmsg.measurement = \"systeme_peltier\";\nreturn msg;",
+        "outputs": 1,
+        "timeout": 0,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "libs": [],
+        "x": 360,
+        "y": 800,
+        "wires": [
+            [
+                "d640cf22b1c0c33f"
+            ]
+        ]
+    },
+    {
+        "id": "brk1",
+        "type": "mqtt-broker",
+        "name": "LocalBroker",
+        "broker": "localhost",
+        "port": "1883",
+        "clientid": "",
+        "autoConnect": true,
+        "usetls": false,
+        "protocolVersion": 4,
+        "keepalive": 15,
+        "cleansession": true,
+        "autoUnsubscribe": true,
+        "birthTopic": "",
+        "birthQos": "0",
+        "birthPayload": "",
+        "birthMsg": {},
+        "closeTopic": "",
+        "closePayload": "",
+        "closeMsg": {},
+        "willTopic": "",
+        "willQos": "0",
+        "willPayload": "",
+        "willMsg": {},
+        "userProps": "",
+        "sessionExpiry": ""
+    },
+    {
+        "id": "grp_peltier",
+        "type": "ui_group",
+        "name": "ThermiquePeltier",
+        "tab": "tab_frigo",
+        "order": 1,
+        "disp": true,
+        "width": "6",
+        "collapse": false,
+        "className": ""
+    },
+    {
+        "id": "grp_door",
+        "type": "ui_group",
+        "name": "Sécurité (Porte)",
+        "tab": "tab_frigo",
+        "order": 2,
+        "disp": true,
+        "width": "6"
+    },
+    {
+        "id": "764f01e22bc142a4",
+        "type": "ui_group",
+        "name": "Contenu du frigo",
+        "tab": "tab_frigo",
+        "order": 3,
+        "disp": true,
+        "width": 6,
+        "collapse": false,
+        "className": ""
+    },
+    {
+        "id": "4523e77bfba454a7",
+        "type": "influxdb",
+        "hostname": "127.0.0.1",
+        "port": 8086,
+        "protocol": "http",
+        "database": "database",
+        "name": "",
+        "usetls": false,
+        "tls": "",
+        "influxdbVersion": "2.0",
+        "url": "http://localhost:8086",
+        "timeout": 10,
+        "rejectUnauthorized": true
+    },
+    {
+        "id": "tab_frigo",
+        "type": "ui_tab",
+        "name": "Medical Fridge",
+        "icon": "medical_services",
+        "order": 1
+    },
+    {
+        "id": "0ce2186d055b0d73",
+        "type": "global-config",
+        "env": [],
+        "modules": {
+            "node-red-dashboard": "3.6.6",
+            "node-red-contrib-web-worldmap": "5.5.4",
+            "node-red-contrib-influxdb": "0.7.0"
+        }
+    }
+]
