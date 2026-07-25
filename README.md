@@ -4,6 +4,8 @@
 This repository contains an academic IoT project developed as part of a Master's program in Digital Engineering for Healthcare.
 The project demonstrates a connected medical refrigerator prototype using embedded systems and IoT technologies for monitoring, control, and supervision — addressing a real problem in healthcare: maintaining the cold chain for sensitive medical products (blood, vaccines, reagents, platelets).
 
+The core value isn't just the cold chain monitoring itself — it's that a single adaptive refrigerator can replace several dedicated ones. Instead of a facility needing separate fridges for blood, vaccines, reagents, and platelets (each with its own footprint, power draw, and maintenance overhead), one unit that reconfigures its target temperature and hysteresis per mode covers all four use cases. That means less equipment to buy, less space needed, and a lower overall cost, without compromising on storage-condition compliance for any single product type.
+
 ## 🎯 Key Features
 - Adaptive temperature regulation with hysteresis control, tuned per medical storage mode
 - Peltier-based cooling system, driven by a MOSFET + transistor gate-drive stage
@@ -44,7 +46,7 @@ Cooling logic: if the fridge is empty, the Peltier stays OFF regardless of mode.
 - `/docs` → Architecture, wiring diagrams, and full technical report
 
 ## 🎥 Project Demonstration
-👉 Project demo video: ![Demo](images/demo.gif)
+👉 Project demo video: ![Demo](images/demo-refri-IoT.gif)
 
 ## ⚠️ Disclaimer
 This project was developed for academic and educational purposes only and is not intended for clinical or medical use.
