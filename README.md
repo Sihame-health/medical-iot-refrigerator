@@ -47,6 +47,7 @@ Cooling logic: if the fridge is empty, the Peltier stays OFF regardless of mode.
 
 ## 🎥 Project Demonstration
 👉 Project demo video: ![Demo](images/demo-refri-IoT.gif)
+📄 Full technical report (French, with English abstract): [docs/rapport-technique.pdf](docs/Technical-Report_IoT-french version).pdf)
 
 ## ⚠️ Disclaimer
 This project was developed for academic and educational purposes only and is not intended for clinical or medical use.
